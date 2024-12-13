@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Крестики-Нолики против Компьютера</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        
+        .board {
+            width: 300px;
+            height: 300px;
+            border-collapse: collapse;
+            background-color: #f9f9f9;
+        }
+        
+        .cell {
+            width: 100px;
+            height: 100px;
+            text-align: center;
+            vertical-align: middle;
+            line-height: 100px;
+            font-size: 60px;
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 0.15s ease-in-out;
+        }
+        
+        .cell:hover {
+            background-color: #eaeaea;
+        }
+        
+        .winner {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Выберите, кем хотите играть:</h1>
+    <button onclick="startGame('X')">Крестиками (X)</button>
+    <button onclick="startGame('O')">Ноликами (O)</button>
+    
+    <br><br>
+    
+    <table class="board" style="display:none">
+        <tr>
+            <td id="cell-0" class="cell"></td>
+            <td id="cell-1" class="cell"></td>
+            <td id="cell-2" class="cell"></td>
+        </tr>
+        <tr>
+            <td id="cell-3" class="cell"></td>
+            <td id="cell-4" class="cell"></td>
+            <td id="cell-5" class="cell"></td>
+        </tr>
+        <tr>
+            <td id="cell-6" class="cell"></td>
+            <td id="cell-7" class="cell"></td>
+            <td id="cell-8" class="cell"></td>
+        </tr>
+    </table>
+    
+    <script>
+        const cells = document.querySelectorAll('.cell');
+        let currentPlayer;
+        let computerSymbol;
+        let gameOver = false;
+
+        // Функция для запуска новой игры
+        function startGame(playerSymbol) {
+            currentPlayer = playerSymbol;
+            computerSymbol = currentPlayer === 'X' ? 'O' : 'X';
+            document.querySelector('.board').style.display = 'block'; // Показываем игровое поле
+            resetBoard();
+        }
+
+        // Функция для сброса игрового поля
+        function resetBoard() {
+            cells.forEach(cell => {
+                cell.innerText = '';
+            });
+            gameOver = false;
+        }
+
+        // Функция для проверки победы
+        function checkWin(symbol) {
+            const winningCombinations = [
+                [0, 1, 2],
+                [3, 4, 5],
+                [6, 7, 8],
+                [0, 3, 6],
+                [1, 4, 7],
+                [2, 5, 8],
+                [0, 4, 8],
+                [2, 4, 6]
+            ];
+
+            for (let i = 0; i < winningCombinations.length; i++) {
+                const [a, b, c] = winningCombinations[i];
+                if (cells[a].innerText === symbol && cells[a].innerText === cells[b].innerText && cells[a].innerText === cells[c].innerText) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // Функция для определения пустых клеток
+        function getEmptyCells() {
+            return Array.from(cells).filter(cell => cell.innerText === '');
+        }
+
+        // Функция для случайного выбора клетки компьютером
+        function computerMove() {
+            const emptyCells = getEmptyCells();
+            const randomIndex = Math.floor(Math.random() * emptyCells.length);
+            emptyCells[randomIndex].innerText = computerSymbol;
+            
+            if (checkWin(computerSymbol)) {
+                alert(`Компьютер победил!`);
+                gameOver = true;
+            } else if (getEmptyCells().length === 0) {
+                alert("Ничья!");
+                gameOver = true;
+            }
+        }
+
+        // Обработчик клика по ячейке
+        cells.forEach(cell => {
+            cell.addEventListener('click', () => {
+                if (!gameOver && !cell.innerText) {
+                    cell.innerText = currentPlayer;
+                    
+                    if (checkWin(currentPlayer)) {
+                        alert(`Поздравляем! Вы выиграли!`);
+                        gameOver = true;
+                    } else if (getEmptyCells().length > 0) {
+                        setTimeout(() => { computerMove(); }, 500); // Задержка перед ходом компьютера
+                    } else {
+                        alert("Ничья!");
+                        gameOver = true;
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
