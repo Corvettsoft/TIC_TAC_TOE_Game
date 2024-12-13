@@ -596,11 +596,11 @@ function closeModal(id) {
 
 function endGame(who) {
     if (who == player) {
-        announceWinner("Congratulations, you won!");
+        announceWinner("Поздравляем, вы победили!");
     } else if (who == computer) {
-        announceWinner("Computer wins!");
+        announceWinner("Компьютер победил!");
     } else {
-        announceWinner("It's a tie!");
+        announceWinner("Ничья!");
     }
     gameOver = true;
     whoseTurn = 0;
