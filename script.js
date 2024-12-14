@@ -1,5 +1,11 @@
 "use strict";
 
+YaGames
+    .init()
+    .then(ysdk => {
+        console.log('Yandex SDK initialized');
+        window.ysdk = ysdk;
+    });
 // Нам и вправду нужны правые клики?
 document.addEventListener('contextmenu', event => event.preventDefault());
 
