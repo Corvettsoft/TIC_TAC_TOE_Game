@@ -1,5 +1,8 @@
 "use strict";
 
+// Нам и вправду нужны правые клики?
+document.addEventListener('contextmenu', event => event.preventDefault());
+
 // Bind Esc key to closing the modal dialog
 document.onkeypress = function (evt) {
     evt = evt || window.event;
