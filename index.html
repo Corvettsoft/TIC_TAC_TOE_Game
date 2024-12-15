@@ -6,7 +6,13 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">
     <!-- Yandex Games SDK -->
-    <script async src="/sdk.js" onload="initSDK()"></script>
+    <!-- Yandex Games SDK -->
+    <script src="/sdk.js"></script>
+    <script>
+      YaGames.init().then(ysdk => {
+        console.log('Yandex SDK initialized');
+      });
+    </script>
   </head>
   <body onload="initialize()">
     <h1>Крестики-нолики</h1>
